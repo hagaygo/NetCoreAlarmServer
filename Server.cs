@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetCoreAlarmServer.Settings;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -10,12 +11,15 @@ namespace NetCoreAlarmServer
 {
     class Server
     {
-        TcpListener server = null;
-        public Server(string ip, int port)
+        TcpListener _server;
+        List<Filter> _filters;
+
+        public Server(string ip, int port, List<Filter> filters)
         {
             IPAddress localAddr = IPAddress.Parse(ip);
-            server = new TcpListener(localAddr, port);
-            server.Start();
+            _filters = filters;
+            _server = new TcpListener(localAddr, port);
+            _server.Start();
             StartListener();
         }
 
@@ -26,7 +30,7 @@ namespace NetCoreAlarmServer
                 while (true)
                 {
                     Console.WriteLine("Waiting for a connection...");
-                    TcpClient client = server.AcceptTcpClient();
+                    var client = _server.AcceptTcpClient();
                     Console.WriteLine("Connected!");
 
                     var t = new Thread(new ParameterizedThreadStart(HandleDeivce));
@@ -36,7 +40,7 @@ namespace NetCoreAlarmServer
             catch (SocketException e)
             {
                 Console.WriteLine("SocketException: {0}", e);
-                server.Stop();
+                _server.Stop();
             }
         }
 

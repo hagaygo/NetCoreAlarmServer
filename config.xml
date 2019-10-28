@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Settings>
   <Filters>
-    <Filter MinInterval="15">      
-      <Event>MotionDetect</Event>
-      <Status>"Start</Status>
-      <Type>Alarm</Type>
+    <Filter MinInterval="15">
+      <Items>
+        <Event>MotionDetect</Event>
+        <Status>"Start</Status>
+        <Type>Alarm</Type>
+      </Items>
       <Actions>
-        <Tcp Port="11111" Address="192.168.200.157"/>
-        <HttpGet Url="http://192.168.200.11"/>
+        <TcpAction Port="11111" Address="192.168.200.157"/>
+        <HttpGetAction Url="http://192.168.200.11"/>
       </Actions>
     </Filter>
   </Filters>

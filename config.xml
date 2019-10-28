@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <Filters>
+    <Filter MinInterval="15">      
+      <Event>MotionDetect</Event>
+      <Status>"Start</Status>
+      <Type>Alarm</Type>
+      <Actions>
+        <Tcp Port="11111" Address="192.168.200.157"/>
+        <HttpGet Url="http://192.168.200.11"/>
+      </Actions>
+    </Filter>
+  </Filters>
+</Settings>

@@ -70,7 +70,7 @@ namespace NetCoreAlarmServer
                                 }
                             if (fits)
                             {
-                                Console.WriteLine("Alaram fits filter , executing actions...");
+                                Console.WriteLine("Alarm fits filter , executing actions...");
                                 PerformAction(filter);
                             }
                         }
@@ -87,6 +87,12 @@ namespace NetCoreAlarmServer
 
         private void PerformAction(Filter filter)
         {
+            if (filter.LastOccurrence.HasValue && DateTime.Now - filter.LastOccurrence < TimeSpan.FromSeconds(filter.MinInterval))
+            {
+                Console.WriteLine("Skipping action because of minimum interval");
+                return;
+            }
+            filter.LastOccurrence = DateTime.Now;
             foreach (var act in filter.Actions)
             {
                 act.Execute();

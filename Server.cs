@@ -54,13 +54,27 @@ namespace NetCoreAlarmServer
                 var sr = new StreamReader(stream);
                 while (!sr.EndOfStream)
                 {
-                    var line = sr.ReadLine();
-                    Console.WriteLine("Got " + line);
+                    var line = sr.ReadLine();                    
                     if (line.Contains("{"))
                     {
                         line = line.Substring(line.IndexOf("{")).Trim();
-                        Console.WriteLine("line after trim " + line);
-                    }                    
+                        var json = Newtonsoft.Json.Linq.JObject.Parse(line);                        
+                        foreach (var filter in _filters)
+                        {
+                            var fits = true;
+                            foreach (var key in filter.Items.Keys)
+                                if (json.Value<string>(key) != filter.Items[key])
+                                {
+                                    fits = false;
+                                    break;
+                                }
+                            if (fits)
+                            {
+                                Console.WriteLine("Alaram fits filter , executing actions...");
+                                PerformAction(filter);
+                            }
+                        }
+                    }  // else ignore for now
                 }
                 Console.WriteLine("Disconnected");
             }
@@ -68,6 +82,14 @@ namespace NetCoreAlarmServer
             {
                 Console.WriteLine("Exception: {0}", e.ToString());
                 client.Close();
+            }
+        }
+
+        private void PerformAction(Filter filter)
+        {
+            foreach (var act in filter.Actions)
+            {
+                act.Execute();
             }
         }
     }

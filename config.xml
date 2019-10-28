@@ -4,7 +4,7 @@
     <Filter MinInterval="15">
       <Items>
         <Event>MotionDetect</Event>
-        <Status>"Start</Status>
+        <Status>Start</Status>
         <Type>Alarm</Type>
       </Items>
       <Actions>

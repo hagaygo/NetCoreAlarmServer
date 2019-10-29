@@ -54,6 +54,7 @@ namespace NetCoreAlarmServer
                 {
                     var f = new Filter();
                     f.MinInterval = Convert.ToInt32(filter.Attribute("MinInterval")?.Value ?? "15");
+                    f.Name = filter.Attribute("Name")?.Value;
                     f.Items = new Dictionary<string, string>();
                     foreach (var item in filter.Element("Items").Elements())
                     {

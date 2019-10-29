@@ -10,5 +10,6 @@ namespace NetCoreAlarmServer.Settings
         public int MinInterval { get; set; }
         public List<AlarmAction> Actions { get; set; }
         public Dictionary<string, string> Items { get; set; }
+        public string Name { get; set; }
     }
 }

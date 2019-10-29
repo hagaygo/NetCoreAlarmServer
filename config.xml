@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Settings>
   <Filters>
-    <Filter MinInterval="15">
+    <Filter MinInterval="15" Name="Movement Detection">
       <Items>
         <Event>MotionDetect</Event>
         <Status>Start</Status>

@@ -27,11 +27,11 @@ namespace NetCoreAlarmServer
         {
             try
             {
+                Console.WriteLine("Waiting for a connections...");
                 while (true)
-                {
-                    Console.WriteLine("Waiting for a connection...");
+                {                    
                     var client = _server.AcceptTcpClient();
-                    Console.WriteLine("Connected!");
+                    Console.WriteLine("Client connection from {0}", ((IPEndPoint)client.Client.RemoteEndPoint).Address);
 
                     var t = new Thread(new ParameterizedThreadStart(HandleDeivce));
                     t.Start(client);
@@ -70,13 +70,13 @@ namespace NetCoreAlarmServer
                                 }
                             if (fits)
                             {
-                                Console.WriteLine("Alarm fits filter , executing actions...");
+                                Console.WriteLine("Alarm fits filter ({0}) , executing actions...", filter.Name);
                                 PerformAction(filter);
                             }
                         }
                     }  // else ignore for now
                 }
-                Console.WriteLine("Disconnected");
+                Console.WriteLine("Disconnected from {0}", ((IPEndPoint)client.Client.RemoteEndPoint).Address);
             }
             catch (Exception e)
             {
@@ -89,7 +89,7 @@ namespace NetCoreAlarmServer
         {
             if (filter.LastOccurrence.HasValue && DateTime.Now - filter.LastOccurrence < TimeSpan.FromSeconds(filter.MinInterval))
             {
-                Console.WriteLine("Skipping action because of minimum interval");
+                Console.WriteLine("Skipping action because of minimum interval ({0})", filter.Name);
                 return;
             }
             filter.LastOccurrence = DateTime.Now;
